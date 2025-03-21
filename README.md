@@ -1,65 +1,66 @@
 # NIFTY-50 Trading Bot
 
-This project aims to develop an algorithmic trading bot using the NIFTY-50 Stock Market Data (2000–2021) dataset from Kaggle. The dataset contains historical daily stock prices for 50 stocks in the NIFTY-50 index, covering the period from 2000 to 2021. The bot will leverage machine learning (LSTM models) and technical analysis to predict price movements and execute trading strategies.
+This project builds a trading bot using NIFTY-50 stock data (2000–2021) from Kaggle. It uses daily stock prices for 50 stocks to predict prices with an LSTM model and test trading strategies.
 
 ## Project Structure
 
-- **data/**: Contains the NIFTY-50 dataset files (e.g., `ADANIPORTS.csv`, `NIFTY50_all.csv`).
-- **src/**: Contains the scripts:
-  - `download_data.py`: Script to download and organize the dataset.
-  - (To be added) `eda.py`: Script for Exploratory Data Analysis.
-  - (To be added) `train_model.py`: Script to train the LSTM model.
-  - (To be added) `trading_bot.py`: Script to implement the trading bot logic.
+- **data/**: Stock data files (e.g., `ADANIPORTS.csv`, `NIFTY50_all.csv`) and EDA outputs (e.g., `eda_ADANIPORTS.csv`).
+- **models/**: Saved LSTM models (e.g., `lstm_ADANIPORTS.pth`).
+- **src/**:
+  - **data/**: `dataDownload.py` (downloads data), `preprocess.py` (prepares data for LSTM).
+  - **eda/**: `eda.py`, `eda.ipynb`, `detailed_Eda.ipynb` (data analysis scripts).
+  - **modeling/**: `lstm_model.py` (LSTM model training).
+  - **strategies/**: `trading_strategies.py` (trading logic).
+  - **trading_bot/**: `trading_bot.py` (bot implementation).
 - **README.md**: This file.
+- **requirements.txt**: List of Python libraries.
 
 ## Dataset Description
 
-The dataset includes CSV files for each NIFTY-50 stock (e.g., `ADANIPORTS.csv`, `ASIANPAINT.csv`) and a combined file (`NIFTY50_all.csv`). Each file contains the following columns:
-- `Date`: Date of the record (2000–2021).
-- `Symbol`: Stock ticker (e.g., ADANIPORTS, AXISBANK).
-- `Series`: Type of security (e.g., EQ for equity).
-- `Prev Close`: Previous day's closing price.
+Each stock CSV (e.g., `ADANIPORTS.csv`) and `NIFTY50_all.csv` includes:
+- `Date`: Trading date (2000–2021).
+- `Symbol`: Stock ticker (e.g., ADANIPORTS).
+- `Series`: Security type (e.g., EQ for equity).
+- `Prev Close`: Last day’s close price.
 - `Open`: Opening price.
-- `High`: Highest price of the day.
-- `Low`: Lowest price of the day.
+- `High`: Day’s highest price.
+- `Low`: Day’s lowest price.
 - `Last`: Last traded price.
 - `Close`: Closing price.
 - `VWAP`: Volume Weighted Average Price.
-- `Volume`: Trading volume.
-- `Turnover`: Turnover in rupees.
-- `Trades`: Number of trades (available from 2011 onwards).
-- `Deliverable Volume`: Volume delivered (available from 2007 onwards).
-- `%Deliverble`: Percentage of volume delivered.
+- `Volume`: Shares traded.
+- `Turnover`: Value in rupees.
+- `Trades`: Number of trades (from 2011).
+- `Deliverable Volume`: Shares delivered (from 2007).
+- `%Deliverble`: Percentage delivered.
 
-## Project Goals
+## What’s Done
 
-1. **Exploratory Data Analysis (EDA)**: Analyze the historical data to identify trends, seasonality, and correlations across stocks.
-2. **Model Training**: Train an LSTM model to predict future stock prices using historical data and technical indicators (e.g., RSI, MACD).
-3. **Trading Bot**: Implement a trading bot that uses model predictions and predefined strategies (e.g., momentum, mean reversion) to simulate trades.
-4. **Real-Time Integration**: Extend the bot to fetch real-time data (via `yfinance`) and execute live trading strategies.
+- Analyzed data for 10 stocks to find trends and patterns.
+- Trained an LSTM model to predict prices:
+  - Uses 60 days of past data.
+  - Model has two LSTM layers (50 units each) and one output layer.
+  - Trained for 100 epochs with Adam optimizer and MSE loss.
+  - Saved to `models/` (e.g., `lstm_ADANIPORTS.pth`).
 
 ## How to Run
 
-1. **Environment Setup**:
-   - Activate the virtual environment: `source new_env/bin/activate`.
-   - Install dependencies: `pip install -r requirements.txt`.
+1. **Setup**:
+   - Activate environment: `source env_name/bin/activate`.
+   - Install libraries: `pip install -r requirements.txt`.
 
-2. **Download the Dataset**:
-   - Navigate to the `src/` directory: `cd src`.
-   - Run the download script: `python3 download_data.py`.
-   - This will download the dataset and move the CSV files to the `data/` directory.
+2. **Get Data**:
+   - Go to `src/`: `cd src`.
+   - Run: `python3 data/dataDownload.py` (downloads data to `data/`).
+
+3. **Train Model**:
+   - Run: `python3 modeling/lstm_model.py` (trains LSTM and saves it).
 
 ## Dependencies
 
 - Python 3.10
-- Libraries: pandas, numpy, matplotlib, seaborn, statsmodels, torch, sklearn, ta, yfinance (listed in `requirements.txt`)
+- Libraries: pandas, numpy, matplotlib, seaborn, statsmodels, torch, sklearn
 
-## License
+## Next Step
 
-This project is licensed under the MIT License. See the `LICENSE` file for details (to be added).
-
-## Next Steps
-
-- Perform EDA on the dataset to understand stock price patterns.
-- Train an LSTM model using historical data and technical indicators.
-- Develop trading strategies and simulate trades using the bot.
+- Build trading strategies in `trading_strategies.py` using LSTM predictions.
